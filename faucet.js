@@ -3,9 +3,9 @@ import * as path from 'path'
 
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { SigningStargateClient } from "@cosmjs/stargate";
-import { FrequencyChecker } from './checker';
+import { FrequencyChecker } from './checker.js';
 
-import conf from './config'
+import conf from './config.js'
 
 // load config
 console.log("loaded config: ", conf)
@@ -27,19 +27,19 @@ app.get('/config.json', async (req, res) => {
 })
 
 app.get('/send/:address', async (req, res) => {
-  const {address} = req.params;
+  const { address } = req.params;
   console.log('request tokens to ', address, req.ip)
   if (address) {
     try {
       if (address.startsWith(conf.sender.option.prefix)) {
-        if( await checker.checkAddress(address) && await checker.checkIp(req.ip) ) {
+        if (await checker.checkAddress(address) && await checker.checkIp(req.ip)) {
           checker.update(req.ip) // get ::1 on localhost
           sendTx(address).then(ret => {
             console.log('sent tokens to ', address)
             checker.update(address)
             res.send({ result: ret })
           });
-        }else {
+        } else {
           res.send({ result: "You requested too often" })
         }
       } else {
