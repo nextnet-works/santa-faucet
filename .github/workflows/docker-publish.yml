@@ -2,9 +2,9 @@ name: Build and Publish Docker Image
 
 on:
   push:
-    branches: [ main ]
+    branches: [ cosmos ]
   pull_request:
-    branches: [ main ]
+    branches: [ cosmos ]
 
 env:
   REGISTRY: ghcr.io
